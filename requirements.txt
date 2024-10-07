@@ -1,0 +1,14 @@
+fastjsonschema==2.19.1
+future==1.0.0
+greenlet==3.0.3
+idna==3.7
+pure-eval==0.2.2
+pycparser==2.22
+PySocks==1.7.1
+pytz==2024.1
+pywin32==306
+setuptools==70.0.0
+urllib3==2.2.1
+wcwidth==0.2.13
+webencodings==0.5.1
+widgetsnbextension==4.0.11
