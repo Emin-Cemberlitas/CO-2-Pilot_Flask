@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Layout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css', _external=True) }}">
+
+</head>
+<body>
+
+    <!-- PAGE1 -->
+    <div class="image-container" style="overflow: hidden; position: relative; max-height: 100vh;">
+            <div class="text-overlay1">
+                CO–
+            </div>
+            <div class="text-overlay2">
+                2
+            </div>
+            <div class="text-overlay3">
+                –Pilot
+            </div>
+            <div class="text-overlay4">
+                Your results
+            </div>
+
+        <img src="{{ url_for('static', filename='CCUS_cover.jpg', _external=True) }}" alt="Header Image">
+
+        <div class="text-subtitle">Unlock profit with <br> Carbon Capture</div>
+
+    </div>
+
+
+    <!-- PAGE2-->
+
+    <div class="subhead">
+        <span class="line-1">MAN Energy Solutions</span><br>
+        <span class="line-2">CO-2-Pilot – Results</span>
+    </div>
+
+    <div class="entries-container">
+        <h1>Your entries</h1>
+
+        <div class="table-container">
+            <table class="entries-table">
+                <tr>
+                    <th>Input</th>
+                    <th>Value</th>
+                    <th></th>
+                    <th>Input</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td>Industry sector</td>
+                    <td>{{ data.industry }}</td>
+                    <th></th>
+
+                    <td>Captured CO<sub>2</sub> p.a.</td>
+                    <td>{{ data.captured_co2 }} mtpa</td>
+                </tr>
+
+                <tr>
+                    <td>Country</td>
+                    <td>{{ data.country }}</td>
+                    <th></th>
+
+                    <td>CO<sub>2</sub> content in exhaust gas</td>
+                    <td>{{ data.co2_content }}%</td>
+                </tr>
+
+                <tr>
+                    <td>Lifetime</td>
+                    <td>{{ data.lifetime }} years</td>
+                    <th></th>
+                    <td>CO<sub>2</sub> price/tax credit</td>
+                    <td>{{ data.co2Price }} {{data_result.symbol_currency}}/t CO<sub>2</sub></td>
+                </tr>
+
+                <tr>
+                    <td>Operation hours p.a.</td>
+                    <td>{{ data.operationHours }} hours</td>
+                    <th></th>
+                    <td>Electricity price</td>
+                    <td>{{ data.electricityPrice }} {{data_result.symbol_currency}}/MWh<sub>el</sub></td>
+                </tr>
+
+                <tr>
+                    <td>Install year</td>
+                    <td>{{ data.installyear }}</td>
+                    <th></th>
+                    <td>Discount rate</td>
+                    <td>{{ data.discount_rate }}%</td>
+                </tr>
+
+                <tr>
+                    <td>Type of CO<sub>2</sub> transport</td>
+                    <td>{{ data.transport_type }}</td>
+                    <th></th>
+                    <td>Financial support/subsidy</td>
+                    <td>
+                        {% if data.subsidy_amount and data.subsidy_amount != 0 %}
+                            {{ data.subsidy_amount }} mio. {{data_result.symbol_currency}}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Distance to storage</td>
+                    <td>{{ data.distance_storage }} km</td>
+                    <th></th>
+                    <td>Compression technology</td>
+                    <td>{{ data.compression_technology}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="results-container">
+        <h2>Your results</h2>
+        <div class="results-puffer">
+            <table class="results-table">
+                <tr>
+                    <td>You will achieve these results with your project:</td>
+                    <td><span class="highlight"></span></td>
+                    <td class="unit"></td>
+                </tr>
+                <tr>
+                    <td>Your Payback time will be in</td>
+                    <td><span class="highlight">{{ data_result.payback_display }}</span></td>
+                    <td class="unit">years</td>
+                </tr>
+                <tr>
+                    <td>You will achieve an return on investment (ROI) of</td>
+                    <td><span class="highlight">{{ data_result.roi_display }}</span></td>
+                    <td class="unit">%</td>
+                </tr>
+                <tr>
+                    <td>Levelized cost of CO<sub>2</sub> (LCOC) ranges between</td>
+                    <td><span class="highlight">{{ data_result.lcoc_min | int }} - {{ data_result.lcoc_max | int }}</span></td>
+                    <td class="unit">{{data_result.symbol_currency}}/t CO<sub>2</sub></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="plot-container">
+        <div class="plot-item">
+            <h5>Cumulative cash flow</h5>
+            {{ cash_flow_svg|safe }}</div>
+        <div></div>
+        <div class="plot-item">
+            <h5>Your different cash streams over project lifetime</h5>
+            {{ sankey_svg|safe }}</div>
+    </div>
+    <div style="page-break-after: always;"></div>
+
+        <div class="subhead2">
+        <span class="line-1">MAN Energy Solutions</span><br>
+        <span class="line-2">CO-2-Pilot – Results</span>
+        </div>
+
+    <img src="{{ url_for('static', filename='RG_Inline.jpg', _external=True) }}" alt="Header Image">
+
+    <div class="results-container2">
+        <h3>Compression comparison</h3>
+        <h4>Compared to inline compressors, gear compressors can achieve the following results:</h4>
+        <div class="results-puffer">
+            <table class="results-table">
+                <tr>
+
+                    <td>Reduced power</td>
+                    <td><span class="highlight">{{ data_result.effiency_compression }}</span></td>
+                    <td class="unit">%</td>
+                </tr>
+                <tr>
+                    <td>Over you lifetime, you have a cost benefit of</td>
+                    <td><span class="highlight">{{ data_result.compression_cost_benefit }}</span></td>
+                    <td class="unit">mio. {{data_result.symbol_currency}}</td>
+                </tr>
+            </table>
+            <table class="results-table2">
+                <tr>
+                    <td>Estimated gear compressor type:</td>
+                    <td><span class="highlight">{{ data_result.RG_framesize }}</span></td>
+                </tr>
+                <tr>
+                    <td>Estimated inline compressor type:</td>
+                    <td><span class="highlight">{{ data_result.RB_framesize }}</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="plot-container">
+        <h2>Compression technology discounted costs</h2>
+        <div class="plot-item">{{ compression_chart_svg|safe }}</div>
+    </div>
+
+    <div class="disclaimer">
+    The information in this report is provided without any representations or warranties, express or implied, and we disclaim any and all liability for inaccuracies, errors or omissions in the information. All information provided in this report is intended for general guidance only and is not intended to be used as a substitute for specific technical or commercial information and advice.”
+    </div>
+
+    <div style="page-break-after: always;"></div>
+    <div class="subhead3">
+        <span class="line-1">MAN Energy Solutions</span><br>
+        <span class="line-2">CO-2-Pilot – Results</span>
+    </div>
+
+    <img src="{{ url_for('static', filename='mole.jpg', _external=True) }}" alt="Header Image" id="img2">
+
+    <div class="text-subtitle2">Assumptions made in calculation</div>
+
+    <div class="text-group">
+    Levelized cost of CO2 formula   <br>
+    Scope of supply compressors:   <br>
+    Energy demand capture plant:   <br>
+    CAPEX capture plant:   <br>
+    Transport & storage assumptions:   <br>
+    Construction site cost index
+    </div>
+    <div class="text-group2">Levelized cost of CO<sub>2</sub> is calculated using the following formula:</div>
+    <img src="{{ url_for('static', filename='formel.jpg', _external=True) }}" alt="Formel" id="img3">
+    <div class="text-group3">
+    The following abbreviations represent:<br>
+        <ul>
+            <li>I = Investment costs</li>
+            <li>O&M = Operating and maintenance costs</li>
+            <li>E = Energy costs</li>
+            <li>m<sub>t</sub> = Amount of CO2 captured per year</li>
+            <li>i = Discount rate</li>
+            <li>t = Year</li>
+        </ul>
+    </div>
+</body>
+</html>
