@@ -10,8 +10,15 @@ import main
 from redis import Redis
 import numpy as np
 import redis
+import os
+#r = redis.Redis(host='localhost', port=6379)
 
-r = redis.Redis(host='localhost', port=6379)
+r = redis.Redis(
+    host='myredisinstance.redis.cache.windows.net',
+    port=6379,
+    password='Koqcw3KvpNAcaPem5V7tNL5PNU7nf48SgAzCaJpoZpI',
+    ssl=True)
+
 if r.ping():
     print("Redis server is running")
 else:
@@ -31,7 +38,7 @@ def convert_np_to_python(obj):
 app = Flask(__name__)
 # Session Config
 app.config['SESSION_TYPE'] = 'redis'
-app.config['SESSION_REDIS'] = Redis(host='localhost', port=6379)
+app.config['SESSION_REDIS'] = Redis(host='myredisinstance.redis.cache.windows.net', port=6379)
 app.config['SECRET_KEY'] = 'supersecretkey'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
 app.config['SESSION_PERMANENT'] = True
@@ -39,7 +46,8 @@ app.config['SESSION_USE_SIGNER'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
 
-path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+path_to_wkhtmltopdf = os.path.join(os.getcwd(), 'bin', 'wkhtmltopdf')
 config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
 CORS(app, supports_credentials=True)
 @app.route('/calculate', methods=['POST'])
